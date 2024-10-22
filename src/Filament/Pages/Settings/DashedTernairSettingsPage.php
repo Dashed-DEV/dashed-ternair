@@ -16,7 +16,7 @@ use Filament\Forms\Components\Placeholder;
 use Dashed\DashedCore\Models\Customsetting;
 use Dashed\DashedForms\Classes\MailingProviders\ActiveCampaign;
 
-class TernairSettingsPage extends Page
+class DashedTernairSettingsPage extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-bell';
     protected static bool $shouldRegisterNavigation = false;

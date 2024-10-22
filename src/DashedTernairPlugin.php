@@ -2,6 +2,7 @@
 
 namespace Dashed\DashedTernair;
 
+use Dashed\DashedTernair\Filament\Pages\Settings\DashedTernairSettingsPage;
 use Filament\Panel;
 use Filament\Contracts\Plugin;
 use Dashed\DashedTernair\Filament\Resources\TernairResource;
@@ -17,7 +18,8 @@ class DashedTernairPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel
-            ->resources([
+            ->pages([
+                DashedTernairSettingsPage::class,
             ]);
     }
 

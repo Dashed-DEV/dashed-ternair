@@ -2,13 +2,11 @@
 
 namespace Dashed\DashedTernair;
 
+use Dashed\DashedTernair\Filament\Pages\Settings\DashedTernairSettingsPage;
 use Livewire\Livewire;
-use Dashed\DashedTernair\Livewire\Ternair;
 use Spatie\LaravelPackageTools\Package;
 use Illuminate\Console\Scheduling\Schedule;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Dashed\DashedTernair\Commands\SendWebhooksForTernairInputs;
-use Dashed\DashedTernair\Filament\Pages\Settings\TernairSettingsPage;
 
 class DashedTernairServiceProvider extends PackageServiceProvider
 {
@@ -23,11 +21,11 @@ class DashedTernairServiceProvider extends PackageServiceProvider
         cms()->builder(
             'settingPages',
             array_merge(cms()->builder('settingPages'), [
-                'ternairSettings' => [
-                    'name' => 'Ternair instellingen',
+                'dashedTernair' => [
+                    'name' => 'Dashed Ternair instellingen',
                     'description' => 'Beheer instellingen voor Ternair',
                     'icon' => 'bell',
-                    'page' => TernairSettingsPage::class,
+                    'page' => DashedTernairSettingsPage::class,
                 ],
             ])
         );
