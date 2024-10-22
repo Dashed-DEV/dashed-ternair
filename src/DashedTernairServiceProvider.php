@@ -2,6 +2,7 @@
 
 namespace Dashed\DashedTernair;
 
+use Dashed\DashedTernair\Classes\FormWebhooks\Webhook;
 use Dashed\DashedTernair\Filament\Pages\Settings\DashedTernairSettingsPage;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -24,6 +25,16 @@ class DashedTernairServiceProvider extends PackageServiceProvider
                     'description' => 'Beheer instellingen voor Ternair',
                     'icon' => 'bell',
                     'page' => DashedTernairSettingsPage::class,
+                ],
+            ])
+        );
+
+        forms()->builder(
+            'webhookClasses',
+            array_merge(cms()->builder('webhookClasses'), [
+                'ternair-webhook-1' => [
+                    'name' => 'Ternair webhook',
+                    'class' => Webhook::class,
                 ],
             ])
         );
