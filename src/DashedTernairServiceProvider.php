@@ -3,9 +3,7 @@
 namespace Dashed\DashedTernair;
 
 use Dashed\DashedTernair\Filament\Pages\Settings\DashedTernairSettingsPage;
-use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
-use Illuminate\Console\Scheduling\Schedule;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class DashedTernairServiceProvider extends PackageServiceProvider

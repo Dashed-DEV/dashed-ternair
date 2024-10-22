@@ -5,8 +5,6 @@ namespace Dashed\DashedTernair;
 use Dashed\DashedTernair\Filament\Pages\Settings\DashedTernairSettingsPage;
 use Filament\Panel;
 use Filament\Contracts\Plugin;
-use Dashed\DashedTernair\Filament\Resources\TernairResource;
-use Dashed\DashedTernair\Filament\Pages\Settings\TernairSettingsPage;
 
 class DashedTernairPlugin implements Plugin
 {
