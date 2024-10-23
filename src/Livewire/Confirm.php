@@ -21,7 +21,7 @@ class Confirm extends Component
         $this->blockData = $blockData;
 
         if(!$this->aapKey || !$this->tid) {
-            return FrontendController::pageNotFoundView();
+            return redirect('/');
         }
     }
 

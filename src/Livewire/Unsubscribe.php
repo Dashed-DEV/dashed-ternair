@@ -21,7 +21,7 @@ class Unsubscribe extends Component
         $this->blockData = $blockData;
 
         if(!$this->ezineCode || !$this->tid) {
-            return FrontendController::pageNotFoundView();
+            return redirect('/');
         }
     }
 
