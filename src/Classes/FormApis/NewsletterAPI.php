@@ -82,4 +82,34 @@ class NewsletterAPI
                 ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->pluck('name', 'id') : []),
         ];
     }
+
+    public static function confirm(string $aapKey, string $tid): void
+    {
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'X-API-Application' => Customsetting::get('x_api_application_header'),
+        ])->post('https://campaign3-interact-api.ternairsoftware.com/subscription/confirm', [
+            'aapKey' => $aapKey,
+            'tid' => $tid,
+        ]);
+
+        if ($response->failed()) {
+            throw new \Exception('Failed to unsubscribe from newsletter with error ' . $response->body());
+        }
+    }
+
+    public static function unsubscribe(string $ezineCode, string $tid): void
+    {
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'X-API-Application' => Customsetting::get('x_api_application_header'),
+        ])->post('https://campaign3-interact-api.ternairsoftware.com/subscription/unsubscribe', [
+            'ezineCodes' => $ezineCode,
+            'tid' => $tid,
+        ]);
+
+        if ($response->failed()) {
+            throw new \Exception('Failed to unsubscribe from newsletter with error ' . $response->body());
+        }
+    }
 }

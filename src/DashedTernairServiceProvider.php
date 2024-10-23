@@ -2,9 +2,13 @@
 
 namespace Dashed\DashedTernair;
 
+use Dashed\DashedForms\Livewire\Form;
 use Dashed\DashedTernair\Classes\FormApis\NewsletterAPI;
 use Dashed\DashedTernair\Classes\FormWebhooks\Webhook;
 use Dashed\DashedTernair\Filament\Pages\Settings\DashedTernairSettingsPage;
+use Dashed\DashedTernair\Livewire\Confirm;
+use Dashed\DashedTernair\Livewire\Unsubscribe;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -14,10 +18,16 @@ class DashedTernairServiceProvider extends PackageServiceProvider
 
     public function bootingPackage()
     {
+        Livewire::component('dashed-ternair.newsletter-confirm', Confirm::class);
+        Livewire::component('dashed-ternair.newsletter-unsubscribe', Unsubscribe::class);
     }
 
     public function configurePackage(Package $package): void
     {
+        $this->publishes([
+            __DIR__ . '/../resources/templates' => resource_path('views/' . env('SITE_THEME', 'dashed')),
+        ], 'dashed-templates');
+
         cms()->builder(
             'settingPages',
             array_merge(cms()->builder('settingPages'), [
