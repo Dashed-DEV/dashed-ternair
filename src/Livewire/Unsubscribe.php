@@ -2,6 +2,7 @@
 
 namespace Dashed\DashedTernair\Livewire;
 
+use Dashed\DashedCore\Controllers\Frontend\FrontendController;
 use Dashed\DashedTernair\Classes\FormApis\NewsletterAPI;
 use Dashed\DashedTranslations\Models\Translation;
 use Filament\Notifications\Notification;
@@ -18,14 +19,14 @@ class Unsubscribe extends Component
         $this->ezineCode = request()->get('ezinecode');
         $this->tid = request()->get('tid');
         $this->blockData = $blockData;
+
+        if(!$this->ezineCode || !$this->tid) {
+            return FrontendController::pageNotFoundView();
+        }
     }
 
     public function submit()
     {
-        if(!$this->ezineCode || !$this->tid) {
-            return;
-        }
-
         NewsletterAPI::unsubscribe($this->ezineCode, $this->tid);
 
         Notification::make()

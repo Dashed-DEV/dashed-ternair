@@ -2,6 +2,7 @@
 
 namespace Dashed\DashedTernair\Livewire;
 
+use Dashed\DashedCore\Controllers\Frontend\FrontendController;
 use Dashed\DashedTernair\Classes\FormApis\NewsletterAPI;
 use Dashed\DashedTranslations\Models\Translation;
 use Filament\Notifications\Notification;
@@ -18,14 +19,14 @@ class Confirm extends Component
         $this->aapKey = request()->get('aapkey');
         $this->tid = request()->get('tid');
         $this->blockData = $blockData;
+
+        if(!$this->aapKey || !$this->tid) {
+            return FrontendController::pageNotFoundView();
+        }
     }
 
     public function submit()
     {
-        if(!$this->aapKey || !$this->tid) {
-            return;
-        }
-
         NewsletterAPI::confirm($this->aapKey, $this->tid);
 
         Notification::make()
