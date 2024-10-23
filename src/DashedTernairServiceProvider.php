@@ -2,6 +2,7 @@
 
 namespace Dashed\DashedTernair;
 
+use Dashed\DashedTernair\Classes\FormApis\NewsletterAPI;
 use Dashed\DashedTernair\Classes\FormWebhooks\Webhook;
 use Dashed\DashedTernair\Filament\Pages\Settings\DashedTernairSettingsPage;
 use Spatie\LaravelPackageTools\Package;
@@ -35,6 +36,16 @@ class DashedTernairServiceProvider extends PackageServiceProvider
                 'ternair-webhook-1' => [
                     'name' => 'Ternair webhook',
                     'class' => Webhook::class,
+                ],
+            ])
+        );
+
+        forms()->builder(
+            'apiClasses',
+            array_merge(cms()->builder('apiClasses'), [
+                'ternair-newsletters-api' => [
+                    'name' => 'Ternair newsletter API',
+                    'class' => NewsletterAPI::class,
                 ],
             ])
         );

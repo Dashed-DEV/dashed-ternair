@@ -8,9 +8,6 @@ use Dashed\DashedForms\Models\FormInput;
 
 class Webhook
 {
-    public $name = 'Ternair';
-    public $slug = 'ternair';
-
     public static function dispatch(FormInput $formInput, $webhook)
     {
         $data = [];

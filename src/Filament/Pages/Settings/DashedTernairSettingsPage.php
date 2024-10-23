@@ -33,10 +33,7 @@ class DashedTernairSettingsPage extends Page
 
         $sites = Sites::getSites();
         foreach ($sites as $site) {
-            $formData["notification_form_inputs_emails_{$site['id']}"] = json_decode(Customsetting::get('notification_form_inputs_emails', $site['id'], '{}'));
-            $formData["form_redirect_server_side"] = Customsetting::get('form_redirect_server_side', null, true);
-            $formData["form_activecampaign_url_{$site['id']}"] = Customsetting::get('form_activecampaign_url', $site['id']);
-            $formData["form_activecampaign_key_{$site['id']}"] = Customsetting::get('form_activecampaign_key', $site['id']);
+            $formData["x_api_application_header_{$site['id']}"] = Customsetting::get('x_api_application_header', $site['id']);
         }
 
         $this->form->fill($formData);
@@ -49,23 +46,9 @@ class DashedTernairSettingsPage extends Page
 
         $tabs = [];
         foreach ($sites as $site) {
-            $activeCampaign = new ActiveCampaign($site['id']);
-
             $schema = [
-                Placeholder::make('label')
-                    ->label("Formulier instellingen voor {$site['name']}")
-                    ->content('Stel extra opties in voor de formulieren.'),
-                TagsInput::make("notification_form_inputs_emails_{$site['id']}")
-                    ->suggestions(User::where('role', 'admin')->pluck('email')->toArray())
-                    ->label('Emails om de bevestigingsmail van een formulier aanvraag naar te sturen')
-                    ->placeholder('Voer een email in')
-                    ->reactive(),
-                TextInput::make("form_activecampaign_url_{$site['id']}")
-                    ->label('ActiveCampaign API url')
-                    ->helperText('ActiveCampaign actief: ' . ($activeCampaign->connected ? 'Ja' : 'Nee'))
-                    ->reactive(),
-                TextInput::make("form_activecampaign_key_{$site['id']}")
-                    ->label('ActiveCampaign API key')
+                TextInput::make("x_api_application_header_{$site['id']}")
+                    ->label('X-API-Application-Header voor de Ternair API')
                     ->reactive(),
             ];
 
@@ -80,13 +63,7 @@ class DashedTernairSettingsPage extends Page
         $tabGroups[] = Tabs::make('Sites')
             ->tabs($tabs);
 
-        return array_merge($tabGroups, [
-            Section::make('Algemene formulier instellingen')
-                ->schema([
-                    Toggle::make("form_redirect_server_side")
-                        ->label('Doe de redirects server side'),
-                ]),
-        ]);
+        return $tabGroups;
     }
 
     public function getFormStatePath(): ?string
@@ -100,24 +77,13 @@ class DashedTernairSettingsPage extends Page
         $formState = $this->form->getState();
 
         foreach ($sites as $site) {
-            $emails = $this->form->getState()["notification_form_inputs_emails_{$site['id']}"];
-            foreach ($emails as $key => $email) {
-                if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    unset($emails[$key]);
-                }
-            }
-            Customsetting::set('notification_form_inputs_emails', json_encode($emails), $site['id']);
-            $formState["notification_form_inputs_emails_{$site['id']}"] = $emails;
-
-            Customsetting::set('form_activecampaign_url', $this->form->getState()["form_activecampaign_url_{$site['id']}"], $site['id']);
-            Customsetting::set('form_activecampaign_key', $this->form->getState()["form_activecampaign_key_{$site['id']}"], $site['id']);
-            Customsetting::set('form_redirect_server_side', $this->form->getState()["form_redirect_server_side"], $site['id']);
+            Customsetting::set('x_api_application_header', $this->form->getState()["x_api_application_header_{$site['id']}"], $site['id']);
         }
 
         $this->form->fill($formState);
 
         Notification::make()
-            ->title('De formulier instellingen zijn opgeslagen')
+            ->title('De Dashed Ternair instellingen zijn opgeslagen')
             ->success()
             ->send();
     }
