@@ -33,7 +33,9 @@ class DashedTernairSettingsPage extends Page
 
         $sites = Sites::getSites();
         foreach ($sites as $site) {
-            $formData["x_api_application_header_{$site['id']}"] = Customsetting::get('x_api_application_header', $site['id']);
+            $formData["ternair_x_api_application_header_{$site['id']}"] = Customsetting::get('ternair_x_api_application_header', $site['id']);
+            $formData["ternair_api_username_{$site['id']}"] = Customsetting::get('ternair_api_username', $site['id']);
+            $formData["ternair_api_password_{$site['id']}"] = Customsetting::get('ternair_api_password', $site['id']);
         }
 
         $this->form->fill($formData);
@@ -47,8 +49,15 @@ class DashedTernairSettingsPage extends Page
         $tabs = [];
         foreach ($sites as $site) {
             $schema = [
-                TextInput::make("x_api_application_header_{$site['id']}")
+                TextInput::make("ternair_x_api_application_header_{$site['id']}")
                     ->label('X-API-Application-Header voor de Ternair API')
+                    ->reactive(),
+                TextInput::make("ternair_api_username_{$site['id']}")
+                    ->label('API username')
+                    ->reactive(),
+                TextInput::make("ternair_api_password_{$site['id']}")
+                    ->label('API wachtwoord')
+                    ->password()
                     ->reactive(),
             ];
 
@@ -77,7 +86,9 @@ class DashedTernairSettingsPage extends Page
         $formState = $this->form->getState();
 
         foreach ($sites as $site) {
-            Customsetting::set('x_api_application_header', $this->form->getState()["x_api_application_header_{$site['id']}"], $site['id']);
+            Customsetting::set('ternair_x_api_application_header', $this->form->getState()["ternair_x_api_application_header_{$site['id']}"], $site['id']);
+            Customsetting::set('ternair_api_username', $this->form->getState()["ternair_api_username_{$site['id']}"], $site['id']);
+            Customsetting::set('ternair_api_password', $this->form->getState()["ternair_api_password_{$site['id']}"], $site['id']);
         }
 
         $this->form->fill($formState);

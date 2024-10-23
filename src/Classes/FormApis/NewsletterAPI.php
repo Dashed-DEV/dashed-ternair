@@ -17,8 +17,8 @@ class NewsletterAPI
         $data = [];
         $data['IpAddress'] = $formInput->ip;
         $data['EzineCode'] = $api['EzineCode'];
-        $data['SendOptinMail'] = (bool)$api['SendOptinMail'];
-        $data['SendConfirmationMail'] = (bool)$api['SendConfirmationMail'];
+        $data['SendOptinMail'] = $api['SendOptinMail'] ? 1 : 0;
+        $data['SendConfirmationMail'] = $api['SendConfirmationMail'] ? 1 : 0;
         $data['Email'] = $formInput->formFields->where('form_field_id', $api['email_field_id'])->first()->value ?? null;
         $data['Fingerprint'] = $formInput->formFields->where('form_field_id', $api['tid_field_id'])->first()->value ?? null;
         $data['Tid'] = $formInput->formFields->where('form_field_id', $api['fingerprint_field_id'])->first()->value ?? null;
@@ -38,8 +38,10 @@ class NewsletterAPI
 
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'X-API-Application' => Customsetting::get('x_api_application_header'),
-        ])->post('https://campaign3-interact-api.ternairsoftware.com/subscription/newsletter', $data);
+            'X-API-Application' => Customsetting::get('ternair_x_api_application_header'),
+        ])
+            ->withBasicAuth(Customsetting::get('ternair_api_username'), Customsetting::get('ternair_api_password'))
+            ->post('https://campaign3-interact-api.ternairsoftware.com/subscription/newsletter', $data);
 
         if ($response->failed()) {
             $formInput->api_error = $response->body();
@@ -87,11 +89,13 @@ class NewsletterAPI
     {
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'X-API-Application' => Customsetting::get('x_api_application_header'),
-        ])->post('https://campaign3-interact-api.ternairsoftware.com/subscription/confirm', [
-            'aapKey' => $aapKey,
-            'tid' => $tid,
-        ]);
+            'X-API-Application' => Customsetting::get('ternair_x_api_application_header'),
+        ])
+            ->withBasicAuth(Customsetting::get('ternair_api_username'), Customsetting::get('ternair_api_password'))
+            ->post('https://campaign3-interact-api.ternairsoftware.com/subscription/confirm', [
+                'aapKey' => $aapKey,
+                'tid' => $tid,
+            ]);
 
         if ($response->failed()) {
             throw new \Exception('Failed to unsubscribe from newsletter with error ' . $response->body());
@@ -102,11 +106,13 @@ class NewsletterAPI
     {
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'X-API-Application' => Customsetting::get('x_api_application_header'),
-        ])->post('https://campaign3-interact-api.ternairsoftware.com/subscription/unsubscribe', [
-            'ezineCodes' => $ezineCode,
-            'tid' => $tid,
-        ]);
+            'X-API-Application' => Customsetting::get('ternair_x_api_application_header'),
+        ])
+            ->withBasicAuth(Customsetting::get('ternair_api_username'), Customsetting::get('ternair_api_password'))
+            ->post('https://campaign3-interact-api.ternairsoftware.com/subscription/unsubscribe', [
+                'ezineCodes' => $ezineCode,
+                'tid' => $tid,
+            ]);
 
         if ($response->failed()) {
             throw new \Exception('Failed to unsubscribe from newsletter with error ' . $response->body());
