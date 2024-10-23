@@ -19,9 +19,12 @@ class NewsletterAPI
         $data['EzineCode'] = $api['EzineCode'];
         $data['SendOptinMail'] = (bool)$api['SendOptinMail'];
         $data['SendConfirmationMail'] = (bool)$api['SendConfirmationMail'];
-        $data['Email'] = $formInput->formFields->where('form_field_id', $api['email_field_id'])->first()->value;
-        $data['Fingerprint'] = $formInput->formFields->where('form_field_id', $api['tid_field_id'])->first()->value;
-        $data['Tid'] = $formInput->formFields->where('form_field_id', $api['fingerprint_field_id'])->first()->value;
+        $data['Email'] = $formInput->formFields->where('form_field_id', $api['email_field_id'])->first()->value ?? null;
+        $data['Fingerprint'] = $formInput->formFields->where('form_field_id', $api['tid_field_id'])->first()->value ?? null;
+        $data['Tid'] = $formInput->formFields->where('form_field_id', $api['fingerprint_field_id'])->first()->value ?? null;
+        $data['Firstname'] = $formInput->formFields->where('form_field_id', $api['firstname_field_id'])->first()->value ?? null;
+        $data['Middlename'] = $formInput->formFields->where('form_field_id', $api['middlename_field_id'])->first()->value ?? null;
+        $data['Lastname'] = $formInput->formFields->where('form_field_id', $api['lastname_field_id'])->first()->value ?? null;
 
         foreach ($formInput->formFields as $field) {
             $data['data'][$field->formField->name] = $field->formField->type == 'file' ? Storage::disk('dashed')->url($field->value) : $field->value;
@@ -60,6 +63,15 @@ class NewsletterAPI
                 ->label('Email veld')
                 ->required()
                 ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->where('input_type', 'email')->pluck('name', 'id') : []),
+            Select::make('firstname_field_id')
+                ->label('Voornaam veld')
+                ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->pluck('name', 'id') : []),
+            Select::make('middlename_field_id')
+                ->label('Tussenvoegsel veld')
+                ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->pluck('name', 'id') : []),
+            Select::make('lastname_field_id')
+                ->label('Achternaam veld')
+                ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->pluck('name', 'id') : []),
             Select::make('tid_field_id')
                 ->label('TID veld')
                 ->required()
