@@ -11,11 +11,13 @@ class Confirm extends Component
 {
     public ?string $aapKey = '';
     public ?string $tid = '';
+    public array $blockData = [];
 
-    public function mount()
+    public function mount(array $blockData = [])
     {
         $this->aapKey = request()->get('aapkey');
         $this->tid = request()->get('tid');
+        $this->blockData = $blockData;
     }
 
     public function submit()

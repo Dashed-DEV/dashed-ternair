@@ -11,11 +11,13 @@ class Unsubscribe extends Component
 {
     public ?string $ezineCode = '';
     public ?string $tid = '';
+    public array $blockData = [];
 
-    public function mount()
+    public function mount(array $blockData = [])
     {
         $this->ezineCode = request()->get('ezinecode');
         $this->tid = request()->get('tid');
+        $this->blockData = $blockData;
     }
 
     public function submit()
