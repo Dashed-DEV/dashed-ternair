@@ -29,7 +29,7 @@ class Confirm extends Component
         NewsletterAPI::confirm($this->aapKey, $this->tid);
 
         Notification::make()
-            ->body(Translation::get('confirmed_newsletter_subscription', 'ternair-newsletter', 'U bent aangemeld voor de nieuwsbrief.'))
+            ->body(Translation::get('confirmed-newsletter-subscription', 'ternair-newsletter', 'U bent aangemeld voor de nieuwsbrief.'))
             ->success()
             ->send();
 

@@ -29,7 +29,7 @@ class Unsubscribe extends Component
         NewsletterAPI::unsubscribe($this->ezineCode, $this->tid);
 
         Notification::make()
-            ->body(Translation::get('unsubscribed_from_newsletter', 'ternair-newsletter', 'U bent uitgeschreven van de nieuwsbrief.'))
+            ->body(Translation::get('unsubscribed-from-newsletter', 'ternair-newsletter', 'U bent uitgeschreven van de nieuwsbrief.'))
             ->success()
             ->send();
 
