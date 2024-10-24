@@ -14,6 +14,10 @@ class NewsletterAPI
 {
     public static function dispatch(FormInput $formInput, $api)
     {
+        if(!Customsetting::get('ternair_api_username') || !Customsetting::get('ternair_api_password')){
+            return;
+        }
+
         $data = [];
         $data['IpAddress'] = $formInput->ip;
         $data['EzineCode'] = $api['EzineCode'];
@@ -85,8 +89,12 @@ class NewsletterAPI
         ];
     }
 
-    public static function confirm(string $aapKey, string $tid): void
+    public static function confirm(string $aapKey, ?string $tid = null): void
     {
+        if(!Customsetting::get('ternair_api_username') || !Customsetting::get('ternair_api_password')){
+            return;
+        }
+
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'X-API-Application' => Customsetting::get('ternair_x_api_application_header'),
@@ -104,6 +112,10 @@ class NewsletterAPI
 
     public static function unsubscribe(string $ezineCode, string $tid): void
     {
+        if(!Customsetting::get('ternair_api_username') || !Customsetting::get('ternair_api_password')){
+            return;
+        }
+
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'X-API-Application' => Customsetting::get('ternair_x_api_application_header'),

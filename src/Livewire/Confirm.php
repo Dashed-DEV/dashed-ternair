@@ -20,9 +20,11 @@ class Confirm extends Component
         $this->tid = request()->get('tid');
         $this->blockData = $blockData;
 
-        if(!$this->aapKey || !$this->tid) {
+        if(!$this->aapKey) {
             return redirect('/');
         }
+
+        $this->submit();
     }
 
     public function submit()
