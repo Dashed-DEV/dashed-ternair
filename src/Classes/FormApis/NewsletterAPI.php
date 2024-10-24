@@ -95,15 +95,20 @@ class NewsletterAPI
             return;
         }
 
+        $data = [
+            'aapKey' => $aapKey,
+        ];
+
+        if($tid){
+            $data['tid'] = $tid;
+        }
+
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'X-API-Application' => Customsetting::get('ternair_x_api_application_header'),
         ])
             ->withBasicAuth(Customsetting::get('ternair_api_username'), Customsetting::get('ternair_api_password'))
-            ->post('https://campaign3-interact-api.ternairsoftware.com/subscription/confirm', [
-                'aapKey' => $aapKey,
-                'tid' => $tid,
-            ]);
+            ->post('https://campaign3-interact-api.ternairsoftware.com/subscription/confirm', $data);
 
         if ($response->failed()) {
             throw new \Exception('Failed to unsubscribe from newsletter with error ' . $response->body());
