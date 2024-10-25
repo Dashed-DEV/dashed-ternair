@@ -123,15 +123,19 @@ class NewsletterAPI
             return;
         }
 
+        $data = [
+            'ezineCodes' => $ezineCode,
+            'tid' => $tid,
+        ];
+
+        $url = 'https://campaign3-interact-api.ternairsoftware.com/subscription/unsubscribe' . '?' . http_build_query($data);
+
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'X-API-Application' => Customsetting::get('ternair_x_api_application_header'),
         ])
             ->withBasicAuth(Customsetting::get('ternair_api_username'), Customsetting::get('ternair_api_password'))
-            ->post('https://campaign3-interact-api.ternairsoftware.com/subscription/unsubscribe', [
-                'ezineCodes' => $ezineCode,
-                'tid' => $tid,
-            ]);
+            ->post($url);
 
         if ($response->failed()) {
             throw new \Exception('Failed to unsubscribe from newsletter with error ' . $response->body());
