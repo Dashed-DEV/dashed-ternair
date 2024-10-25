@@ -112,7 +112,7 @@ class NewsletterAPI
             ->withBasicAuth(Customsetting::get('ternair_api_username'), Customsetting::get('ternair_api_password'))
             ->post($url);
 
-        if ($response->failed()) {
+        if ($response->failed() && env('APP_ENV') == 'local') {
             throw new \Exception('Failed to unsubscribe from newsletter with error ' . $response->body());
         }
     }
@@ -137,7 +137,7 @@ class NewsletterAPI
             ->withBasicAuth(Customsetting::get('ternair_api_username'), Customsetting::get('ternair_api_password'))
             ->post($url);
 
-        if ($response->failed()) {
+        if ($response->failed() && env('APP_ENV') == 'local') {
             throw new \Exception('Failed to unsubscribe from newsletter with error ' . $response->body());
         }
     }
