@@ -14,7 +14,7 @@ class NewsletterAPI
 {
     public static function dispatch(FormInput $formInput, $api)
     {
-        if(!Customsetting::get('ternair_api_username') || !Customsetting::get('ternair_api_password')){
+        if (!Customsetting::get('ternair_api_username') || !Customsetting::get('ternair_api_password')) {
             return;
         }
 
@@ -91,7 +91,7 @@ class NewsletterAPI
 
     public static function confirm(string $aapKey, ?string $tid = null): void
     {
-        if(!Customsetting::get('ternair_api_username') || !Customsetting::get('ternair_api_password')){
+        if (!Customsetting::get('ternair_api_username') || !Customsetting::get('ternair_api_password')) {
             return;
         }
 
@@ -99,16 +99,18 @@ class NewsletterAPI
             'aapKey' => $aapKey,
         ];
 
-        if($tid){
+        if ($tid) {
             $data['tid'] = $tid;
         }
+
+        $url = 'https://campaign3-interact-api.ternairsoftware.com/subscription/confirm' . '?' . http_build_query($data);
 
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'X-API-Application' => Customsetting::get('ternair_x_api_application_header'),
         ])
             ->withBasicAuth(Customsetting::get('ternair_api_username'), Customsetting::get('ternair_api_password'))
-            ->post('https://campaign3-interact-api.ternairsoftware.com/subscription/confirm', $data);
+            ->post($url);
 
         if ($response->failed()) {
             throw new \Exception('Failed to unsubscribe from newsletter with error ' . $response->body());
@@ -117,7 +119,7 @@ class NewsletterAPI
 
     public static function unsubscribe(string $ezineCode, string $tid): void
     {
-        if(!Customsetting::get('ternair_api_username') || !Customsetting::get('ternair_api_password')){
+        if (!Customsetting::get('ternair_api_username') || !Customsetting::get('ternair_api_password')) {
             return;
         }
 
