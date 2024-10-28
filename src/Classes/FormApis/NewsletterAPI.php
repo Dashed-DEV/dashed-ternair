@@ -34,6 +34,13 @@ class NewsletterAPI
             $data['data'][$field->formField->name] = $field->formField->type == 'file' ? Storage::disk('dashed')->url($field->value) : $field->value;
         }
 
+        $data['Properties'] = [
+            [
+                'Key' => 'Taalcode',
+                'Value' => app()->getLocale(),
+            ]
+        ];
+
         foreach (str(str($formInput->from_url)->explode('?')->last())->explode('&') as $query) {
             $query = str($query)->explode('=');
             $data[$query[0]] = $query[1] ?? '';
@@ -125,7 +132,7 @@ class NewsletterAPI
 
         $data = [
             'ezineCodes' => $ezineCode,
-            'tid' => $tid,
+            'tid' => $tid
         ];
 
         $url = 'https://campaign3-interact-api.ternairsoftware.com/subscription/unsubscribe' . '?' . http_build_query($data);
