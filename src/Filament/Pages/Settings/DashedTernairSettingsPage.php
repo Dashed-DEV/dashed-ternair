@@ -36,6 +36,12 @@ class DashedTernairSettingsPage extends Page
             $formData["ternair_x_api_application_header_{$site['id']}"] = Customsetting::get('ternair_x_api_application_header', $site['id']);
             $formData["ternair_api_username_{$site['id']}"] = Customsetting::get('ternair_api_username', $site['id']);
             $formData["ternair_api_password_{$site['id']}"] = Customsetting::get('ternair_api_password', $site['id']);
+            foreach (Customsetting::get('ternair_redirect_after_confirm_url', $site['id'], type: 'json') ?: [] as $key => $value) {
+                $formData["ternair_redirect_after_confirm_url_{$site['id']}_{$key}"] = $value;
+            }
+            foreach (Customsetting::get('ternair_redirect_after_unsubscribe_url', $site['id'], type: 'json') ?: [] as $key => $value) {
+                $formData["ternair_redirect_after_unsubscribe_url_{$site['id']}_{$key}"] = $value;
+            }
         }
 
         $this->form->fill($formData);
@@ -59,6 +65,8 @@ class DashedTernairSettingsPage extends Page
                     ->label('API wachtwoord')
                     ->password()
                     ->reactive(),
+                linkHelper()->field("ternair_redirect_after_confirm_url_{$site['id']}", false, 'Redirect na bevestigen'),
+                linkHelper()->field("ternair_redirect_after_unsubscribe_url_{$site['id']}", false, 'Redirect na uitschrijven'),
             ];
 
             $tabs[] = Tab::make($site['id'])
@@ -89,6 +97,8 @@ class DashedTernairSettingsPage extends Page
             Customsetting::set('ternair_x_api_application_header', $this->form->getState()["ternair_x_api_application_header_{$site['id']}"], $site['id']);
             Customsetting::set('ternair_api_username', $this->form->getState()["ternair_api_username_{$site['id']}"], $site['id']);
             Customsetting::set('ternair_api_password', $this->form->getState()["ternair_api_password_{$site['id']}"], $site['id']);
+            Customsetting::set('ternair_redirect_after_confirm_url', linkHelper()->getDataToSave($this->form->getState(), "ternair_redirect_after_confirm_url", $site['id']), $site['id']);
+            Customsetting::set('ternair_redirect_after_unsubscribe_url', linkHelper()->getDataToSave($this->form->getState(), "ternair_redirect_after_unsubscribe_url", $site['id']), $site['id']);
         }
 
         $this->form->fill($formState);

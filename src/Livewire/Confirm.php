@@ -3,6 +3,7 @@
 namespace Dashed\DashedTernair\Livewire;
 
 use Dashed\DashedCore\Controllers\Frontend\FrontendController;
+use Dashed\DashedCore\Models\Customsetting;
 use Dashed\DashedTernair\Classes\FormApis\NewsletterAPI;
 use Dashed\DashedTranslations\Models\Translation;
 use Filament\Notifications\Notification;
@@ -20,7 +21,7 @@ class Confirm extends Component
         $this->tid = request()->get('tid');
         $this->blockData = $blockData;
 
-        if(!$this->aapKey) {
+        if (!$this->aapKey) {
             return redirect('/');
         }
 
@@ -36,7 +37,10 @@ class Confirm extends Component
             ->success()
             ->send();
 
-//        return redirect('/');
+        $redirectUrl = linkHelper()->getUrl(Customsetting::get('ternair_redirect_after_confirm_url'));
+        if ($redirectUrl != '#') {
+            return redirect($redirectUrl);
+        }
     }
 
     public function render()
