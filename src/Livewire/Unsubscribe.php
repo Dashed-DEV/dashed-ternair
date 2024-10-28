@@ -34,7 +34,7 @@ class Unsubscribe extends Component
             ->success()
             ->send();
 
-        return redirect('/');
+//        return redirect('/');
     }
 
     public function render()
