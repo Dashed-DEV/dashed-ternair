@@ -36,10 +36,10 @@ class DashedTernairSettingsPage extends Page
             $formData["ternair_x_api_application_header_{$site['id']}"] = Customsetting::get('ternair_x_api_application_header', $site['id']);
             $formData["ternair_api_username_{$site['id']}"] = Customsetting::get('ternair_api_username', $site['id']);
             $formData["ternair_api_password_{$site['id']}"] = Customsetting::get('ternair_api_password', $site['id']);
-            foreach (Customsetting::get('ternair_redirect_after_confirm_url', $site['id'], type: 'json') ?: [] as $key => $value) {
+            foreach (Customsetting::get('ternair_redirect_after_confirm_url', $site['id'], type: 'array') ?: [] as $key => $value) {
                 $formData["ternair_redirect_after_confirm_url_{$site['id']}_{$key}"] = $value;
             }
-            foreach (Customsetting::get('ternair_redirect_after_unsubscribe_url', $site['id'], type: 'json') ?: [] as $key => $value) {
+            foreach (Customsetting::get('ternair_redirect_after_unsubscribe_url', $site['id'], type: 'array') ?: [] as $key => $value) {
                 $formData["ternair_redirect_after_unsubscribe_url_{$site['id']}_{$key}"] = $value;
             }
         }
