@@ -19,7 +19,8 @@ class Webhook
         $data['created_at'] = $formInput->created_at;
 
         foreach ($formInput->formFields as $field) {
-            $data['data'][$field->formField->name] = $field->formField->type == 'file' ? Storage::disk('dashed')->url($field->value) : $field->value;
+            $name = str($field->formField->name)->slug()->toString();
+            $data['data'][$name] = $field->formField->type == 'file' ? Storage::disk('dashed')->url($field->value) : $field->value;
         }
 
         foreach (str(str($formInput->from_url)->explode('?')->last())->explode('&') as $query) {
