@@ -2,6 +2,7 @@
 
 namespace Dashed\DashedTernair;
 
+use Dashed\DashedCore\DashedCorePlugin;
 use Dashed\DashedForms\Livewire\Form;
 use Dashed\DashedTernair\Classes\FormApis\NewsletterAPI;
 use Dashed\DashedTernair\Classes\FormWebhooks\Webhook;
@@ -64,5 +65,8 @@ class DashedTernairServiceProvider extends PackageServiceProvider
             ->name('dashed-ternair')
             ->hasViews();
 
+        cms()->builder('plugins', [
+            new DashedTernairPlugin(),
+        ]);
     }
 }
