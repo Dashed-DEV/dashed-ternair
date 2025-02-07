@@ -29,17 +29,7 @@ class DashedTernairServiceProvider extends PackageServiceProvider
             __DIR__ . '/../resources/templates' => resource_path('views/' . env('SITE_THEME', 'dashed')),
         ], 'dashed-templates');
 
-        cms()->builder(
-            'settingPages',
-            array_merge(cms()->builder('settingPages'), [
-                'dashedTernair' => [
-                    'name' => 'Dashed Ternair instellingen',
-                    'description' => 'Beheer instellingen voor Ternair',
-                    'icon' => 'bell',
-                    'page' => DashedTernairSettingsPage::class,
-                ],
-            ])
-        );
+        cms()->registerSettingsPage(DashedTernairSettingsPage::class, 'Dashed Ternair', 'bell', 'Beheer instellingen voor Ternair');
 
         forms()->builder(
             'webhookClasses',
