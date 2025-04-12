@@ -24,8 +24,8 @@ class NewsletterAPI
         $data['SendOptinMail'] = $api['SendOptinMail'] ? 1 : 0;
         $data['SendConfirmationMail'] = $api['SendConfirmationMail'] ? 1 : 0;
         $data['Email'] = $formInput->formFields->where('form_field_id', $api['email_field_id'])->first()->value ?? null;
-        $data['Fingerprint'] = $formInput->formFields->where('form_field_id', $api['tid_field_id'])->first()->value ?? null;
-        $data['Tid'] = $formInput->formFields->where('form_field_id', $api['fingerprint_field_id'])->first()->value ?? null;
+        $data['Fingerprint'] = $formInput->formFields->where('form_field_id', $api['fingerprint_field_id'])->first()->value ?? null;
+        $data['Tid'] = $formInput->formFields->where('form_field_id', $api['tid_field_id'])->first()->value ?? null;
         $data['Firstname'] = $formInput->formFields->where('form_field_id', $api['firstname_field_id'])->first()->value ?? null;
         $data['Middlename'] = $formInput->formFields->where('form_field_id', $api['middlename_field_id'])->first()->value ?? null;
         $data['Lastname'] = $formInput->formFields->where('form_field_id', $api['lastname_field_id'])->first()->value ?? null;
@@ -36,7 +36,7 @@ class NewsletterAPI
 
         $data['Properties'] = [
             [
-                'Key' => 'Taalcode',
+                'Key' => 'taalcode',
                 'Value' => app()->getLocale(),
             ]
         ];
