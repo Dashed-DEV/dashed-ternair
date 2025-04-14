@@ -103,7 +103,6 @@ class NewsletterAPI
                 ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->pluck('name', 'id') : []),
             Select::make('optin_herkomsts')
                 ->label('Optin Herkomst veld')
-                ->required()
                 ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->pluck('name', 'id') : []),
         ];
     }
