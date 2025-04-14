@@ -23,12 +23,12 @@ class NewsletterAPI
         $data['EzineCode'] = $api['EzineCode'];
         $data['SendOptinMail'] = $api['SendOptinMail'] ? 1 : 0;
         $data['SendConfirmationMail'] = $api['SendConfirmationMail'] ? 1 : 0;
-        $data['Email'] = $formInput->formFields->where('form_field_id', $api['email_field_id'])->first()->value ?? null;
-        $data['Fingerprint'] = $formInput->formFields->where('form_field_id', $api['fingerprint_field_id'])->first()->value ?? null;
-        $data['Tid'] = $formInput->formFields->where('form_field_id', $api['tid_field_id'])->first()->value ?? null;
-        $data['Firstname'] = $formInput->formFields->where('form_field_id', $api['firstname_field_id'])->first()->value ?? null;
-        $data['Middlename'] = $formInput->formFields->where('form_field_id', $api['middlename_field_id'])->first()->value ?? null;
-        $data['Lastname'] = $formInput->formFields->where('form_field_id', $api['lastname_field_id'])->first()->value ?? null;
+        $data['Email'] = $formInput->formFields->where('form_field_id', $api['email_field_id'] ?? '')->first()->value ?? null;
+        $data['Fingerprint'] = $formInput->formFields->where('form_field_id', $api['fingerprint_field_id'] ?? '')->first()->value ?? null;
+        $data['Tid'] = $formInput->formFields->where('form_field_id', $api['tid_field_id'] ?? '')->first()->value ?? null;
+        $data['Firstname'] = $formInput->formFields->where('form_field_id', $api['firstname_field_id'] ?? '')->first()->value ?? null;
+        $data['Middlename'] = $formInput->formFields->where('form_field_id', $api['middlename_field_id'] ?? '')->first()->value ?? null;
+        $data['Lastname'] = $formInput->formFields->where('form_field_id', $api['lastname_field_id'] ?? '')->first()->value ?? null;
 
         foreach ($formInput->formFields as $field) {
             $data['data'][$field->formField->name] = $field->formField->type == 'file' ? Storage::disk('dashed')->url($field->value) : $field->value;
@@ -40,6 +40,14 @@ class NewsletterAPI
                 'Value' => app()->getLocale(),
             ]
         ];
+
+        $optinHerkomst = $formInput->formFields->where('form_field_id', $api['optin_herkomsts'] ?? '')->first()->value ?? null;
+        if ($optinHerkomst) {
+            $data['Properties'][] = [
+                'Key' => 'OptinHerkomst',
+                'Value' => $optinHerkomst,
+            ];
+        }
 
         foreach (str(str($formInput->from_url)->explode('?')->last())->explode('&') as $query) {
             $query = str($query)->explode('=');
@@ -91,6 +99,10 @@ class NewsletterAPI
                 ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->pluck('name', 'id') : []),
             Select::make('fingerprint_field_id')
                 ->label('Fingerprint veld')
+                ->required()
+                ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->pluck('name', 'id') : []),
+            Select::make('optin_herkomsts')
+                ->label('Optin Herkomst veld')
                 ->required()
                 ->options(fn($record) => $record ? $record->fields()->where('type', 'input')->pluck('name', 'id') : []),
         ];
