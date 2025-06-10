@@ -13,7 +13,7 @@
 
             @if($blockData['subtitle'] ?? false)
                 <div class="mt-8 text-lg text-balance text-{{ $blockData['sub_title_color'] }}">
-                    {!! tiptap_converter()->asHTML($blockData['subtitle']) !!}
+                    {!! cms()->convertToHtml($blockData['subtitle']) !!}
                 </div>
             @endif
 
